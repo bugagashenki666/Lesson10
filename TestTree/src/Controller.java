@@ -30,7 +30,7 @@ public class Controller {
                 System.out.println(this.tree.contains(n)? n + " содержится в дереве":n + "не содержится в дереве");
                 return true;
             case "balancing":
-                this.tree.balancing(this.readInt());
+                this.tree.balancing();
                 return true;
             case "array":
                 this.printArray(this.tree.getArray());

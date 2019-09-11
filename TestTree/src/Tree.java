@@ -153,20 +153,13 @@ public class Tree {
         int t = this.data[a]; this.data[a] = this.data[b]; this.data[b] = t;
     }
 
-    public void balancing(int indexOfRoot)
+    public void balancing()
     {
         this.data = this.getArray();
         this.sortByBubble(0, this.data.length - 1, "ASC");
         this.root = null;
         balance(0, this.data.length);
-        /*for(int i = indexOfRoot; i >= 0 ; i--)
-        {
-            this.addValue(this.data[i]);
-        }
-        for(int i/* = indexOfRoot + 1 ; i < this.data.length ; i++)
-        {
-            this.addValue(this.data[i]);
-        }*/
+
     }
     private void balance(int low, int high)
     {
