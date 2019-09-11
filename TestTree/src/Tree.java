@@ -55,6 +55,14 @@ public class Tree {
         }
     }
 
+    public void addValues(int[] data)
+    {
+        for(int i = 0 ; i < data.length ; i++)
+        {
+            this.addValue(data[i]);
+        }
+    }
+
     private boolean delete(Item current, Item parent, int deletedValue) {
         if(current == null) return false;
         if (current.getValue() == deletedValue) {
@@ -85,7 +93,7 @@ public class Tree {
 
     public boolean contains(int value)
     {
-        return contains(this.root, value);
+        return containsFast(this.root, value);
     }
 
     private boolean contains(Item item, int value)
@@ -95,6 +103,20 @@ public class Tree {
         if (item.getRight() != null) if(contains(item.getRight(), value)) return true;
         return false;
     }
+    private boolean containsFast(Item item, int value)
+    {
+        if(item.getValue() == value) return  true;
+        if(item.getValue() > value)
+        {
+            if (item.getLeft() != null) if(contains(item.getLeft(), value)) return true;
+        }
+        else
+        {
+            if (item.getRight() != null) if(contains(item.getRight(), value)) return true;
+        }
+        return false;
+    }
+
     private Item getDownLeft(Item current) {
         if (current.getLeft() != null) return getDownLeft(current.getLeft());
         else return current;
@@ -106,9 +128,9 @@ public class Tree {
     }
 
     private void printTree(Item item) {
-        System.out.println("Here = " + item.getValue());
-        System.out.println("Left = " + (item.getLeft() != null ? item.getLeft().getValue() : "null") +
-                " Right = " + (item.getRight() != null ? item.getRight().getValue() : "null"));
+        System.out.print("Here = " + item.getValue());
+        System.out.println("(Left = " + (item.getLeft() != null ? item.getLeft().getValue() : "null") +
+                " Right = " + (item.getRight() != null ? item.getRight().getValue() : "null") +")");
         if (item.getLeft() != null) printTree(item.getLeft());
         if (item.getRight() != null) printTree(item.getRight());
     }
@@ -126,4 +148,57 @@ public class Tree {
         if (item.getRight() != null) index =  array(item.getRight(), index);
         return index;
     }
+    private void exchange(int a, int b)
+    {
+        int t = this.data[a]; this.data[a] = this.data[b]; this.data[b] = t;
+    }
+
+    public void balancing(int indexOfRoot)
+    {
+        this.data = this.getArray();
+        this.sortByBubble(0, this.data.length - 1, "ASC");
+        this.root = null;
+        for(int i = indexOfRoot; i >= 0 ; i--)
+        {
+            this.addValue(this.data[i]);
+        }
+        for(int i = indexOfRoot + 1 ; i < this.data.length ; i++)
+        {
+            this.addValue(this.data[i]);
+        }
+    }
+    private void sortBySelection(int start_idx, int end_idx, String direction)//direction = "ASC" - упорядочивает по возрастанию по умолчанию упорядочивает по убыванию
+    {
+
+            for (int i = start_idx; i <= end_idx; i++) {
+                int min = i;int max = i;
+                for (int j = i + 1; j <= end_idx; j++) {
+                    if (this.data[min] > this.data[j]) min = j;
+                    if (this.data[max] < this.data[j]) max = j;
+                }
+                if(direction.equals("ASC")) {this.exchange(i, min);}
+                else {this.exchange(i, max);}
+            }
+    }
+
+    private void sortByBubble(int start_idx, int stop_idx, String direction)//direction = "ASC" - упорядочивает по возрастанию по умолчанию упорядочивает по убыванию
+    {
+        if(direction.equals("ASC"))
+        {
+            for(int i = start_idx ; i < stop_idx ; i++) {
+                for (int j = stop_idx; j > i; j--) {
+                    if (this.data[j] < this.data[j - 1]) this.exchange(j, j - 1);
+                }
+            }
+        }
+        else
+        {
+            for(int i = start_idx ; i < stop_idx ; i++) {
+                for (int j = stop_idx; j > i; j--) {
+                    if (this.data[j] > this.data[j - 1]) this.exchange(j, j - 1);
+                }
+            }
+        }
+    }
+
 }
