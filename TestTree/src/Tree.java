@@ -158,14 +158,28 @@ public class Tree {
         this.data = this.getArray();
         this.sortByBubble(0, this.data.length - 1, "ASC");
         this.root = null;
-        for(int i = indexOfRoot; i >= 0 ; i--)
+        balance(0, this.data.length);
+        /*for(int i = indexOfRoot; i >= 0 ; i--)
         {
             this.addValue(this.data[i]);
         }
-        for(int i = indexOfRoot + 1 ; i < this.data.length ; i++)
+        for(int i/* = indexOfRoot + 1 ; i < this.data.length ; i++)
         {
             this.addValue(this.data[i]);
-        }
+        }*/
+    }
+    private void balance(int low, int high)
+    {
+        if(low == high)
+            return;
+
+        int midpoint = (low + high)/2;
+
+        int insert =  this.data[midpoint];
+        this.addValue(insert);
+
+        balance(midpoint+1, high);
+        balance(low, midpoint);
     }
     private void sortBySelection(int start_idx, int end_idx, String direction)//direction = "ASC" - упорядочивает по возрастанию по умолчанию упорядочивает по убыванию
     {
